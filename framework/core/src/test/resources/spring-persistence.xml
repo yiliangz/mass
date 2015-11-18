@@ -54,9 +54,9 @@
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="org.mass.*.mybatis"/>
+		<property name="basePackage" value="org.mass.*.*.repository"/>
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-		<!--<property name="annotationClass" value="com.hzbank.erp.mybatis.interf.MyBatisRepository" />-->
+		<!--<property name="annotationClass" value="org.mass.framework.core.annotation.MyBatisRepository" />-->
 	</bean>
 
 	<context:annotation-config/>
@@ -87,7 +87,7 @@
 		</tx:attributes>
 	</tx:advice>
 	<aop:config>
-		<aop:pointcut id="txPointcut" expression="execution(* org.mass.*.service.*.*(..))"/>
+		<aop:pointcut id="txPointcut" expression="execution(* org.mass.*.*.service.*.*(..))"/>
 		<aop:advisor  advice-ref="txAdvice" pointcut-ref="txPointcut" />
 	</aop:config>
 
