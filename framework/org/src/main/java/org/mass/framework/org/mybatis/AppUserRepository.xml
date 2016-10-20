@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mass.framework.org.repository.AppUserRepository" >
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="org.mass.framework.org.bean.AppUser" >
+	<result column="USER_ID" property="userId"/>
+	<result column="LOGIN" property="login"/>
+	<result column="LOGIN_PASSWORD" property="loginPassword"/>
+	<result column="USER_CODE" property="userCode"/>
+	<result column="USER_MOBILE" property="userMobile"/>
+	<result column="REF_ID" property="refId"/>
+	<result column="REF_TYPE" property="refType"/>
+	<result column="CREATE_TIME" property="createTime"/>
+</resultMap>
+       
+<!-- App_User table all fields -->
+<sql id="Base_Column_List" >
+	 USER_ID,LOGIN,LOGIN_PASSWORD,USER_CODE,USER_MOBILE,REF_ID,REF_TYPE,CREATE_TIME
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="userId != null" >
+	    and USER_ID =  #{userId}
+	</if>
+	 	<if test="login != null and login != ''" >
+	    and LOGIN =  #{login}
+	</if>
+	 	<if test="loginPassword != null and loginPassword != ''" >
+	    and LOGIN_PASSWORD =  #{loginPassword}
+	</if>
+	 	<if test="userCode != null and userCode != ''" >
+	    and USER_CODE =  #{userCode}
+	</if>
+	 	<if test="userMobile != null and userMobile != ''" >
+	    and USER_MOBILE =  #{userMobile}
+	</if>
+	<if test="refId != null" >
+	    and REF_ID =  #{refId}
+	</if>
+	 	<if test="refType != null and refType != ''" >
+	    and REF_TYPE =  #{refType}
+	</if>
+	<if test="createTime != null" >
+	    and CREATE_TIME =  #{createTime}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId">
+	SELECT LAST_INSERT_ID()
+  </selectKey>
+  insert into App_User(USER_ID,LOGIN,LOGIN_PASSWORD,USER_CODE,USER_MOBILE,REF_ID,REF_TYPE,CREATE_TIME)
+ values(#{userId},#{login},#{loginPassword},#{userCode},#{userMobile},#{refId},#{refType},now())
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update App_User set LOGIN=#{login},LOGIN_PASSWORD=#{loginPassword},USER_CODE=#{userCode},USER_MOBILE=#{userMobile},REF_ID=#{refId},REF_TYPE=#{refType},CREATE_TIME=now() where USER_ID=#{userId}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update App_User set 
+	<trim  suffixOverrides="," >
+	<if test="login != null  and login != '' ">
+		LOGIN=#{login},
+	</if>
+	<if test="loginPassword != null  and loginPassword != '' ">
+		LOGIN_PASSWORD=#{loginPassword},
+	</if>
+	<if test="userCode != null  and userCode != '' ">
+		USER_CODE=#{userCode},
+	</if>
+	<if test="userMobile != null  and userMobile != '' ">
+		USER_MOBILE=#{userMobile},
+	</if>
+	<if test="refId != null  ">
+		REF_ID=#{refId},
+	</if>
+	<if test="refType != null  and refType != '' ">
+		REF_TYPE=#{refType},
+	</if>
+	<if test="createTime != null  ">
+		CREATE_TIME=#{createTime},
+	</if>
+	</trim> where USER_ID=#{userId}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from App_User where USER_ID = #{userId}
+</delete>
+ 
+<!-- 根据id查询 用户 -->
+<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Column_List" /> 
+	 from App_User where USER_ID = #{userId}
+</select>
+
+<!-- 用户 列表总数-->
+<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from App_User 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+<!-- 查询用户列表 -->
+<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from App_User 
+	<include refid="Example_Where_Clause"/>
+	<if test="pager.orderCondition != null and pager.orderCondition != ''" >
+      ${pager.orderCondition}
+    </if>
+    <if test="pager.mysqlQueryCondition != null and pager.mysqlQueryCondition != ''" >
+       ${pager.mysqlQueryCondition}
+    </if>
+</select>
+  	
+</mapper>   

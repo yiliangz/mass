@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<generatorConfiguration>
+
+    <jdbcConnection>
+        <driver>com.mysql.jdbc.Driver</driver>
+        <url>jdbc:mysql://192.168.0.7:3306/beauty_reward_ext?useUnicode=true</url>
+        <username>root</username>
+        <password>root</password>
+    </jdbcConnection>
+
+    <generateResources>
+
+        <generateResource table="App_User" comment="用户" basePackage="org.mass.framework.org">
+        <!--<generateResource table="Token" comment="Token" basePackage="org.mass.framework.org">-->
+            <section>model</section>
+            <section>bean</section>
+            <section>mybatis</section>
+            <section>repository</section>
+            <section>service</section>
+            <section>controller</section>
+        </generateResource>
+
+    </generateResources>
+
+
+</generatorConfiguration>

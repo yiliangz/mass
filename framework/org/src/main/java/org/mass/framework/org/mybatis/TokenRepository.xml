@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mass.framework.org.repository.TokenRepository" >
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="org.mass.framework.org.bean.Token" >
+	<result column="ID" property="id"/>
+	<result column="CODE" property="code"/>
+	<result column="CREATE_TIME" property="createTime"/>
+	<result column="EXPIRED_TIME" property="expiredTime"/>
+	<result column="DURATION" property="duration"/>
+	<result column="REF_ID" property="refId"/>
+	<result column="REF_TYPE" property="refType"/>
+</resultMap>
+       
+<!-- Token table all fields -->
+<sql id="Base_Column_List" >
+	 ID,CODE,CREATE_TIME,EXPIRED_TIME,DURATION,REF_ID,REF_TYPE
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="id != null" >
+	    and ID =  #{id}
+	</if>
+	 	<if test="code != null and code != ''" >
+	    and CODE =  #{code}
+	</if>
+	<if test="createTime != null" >
+	    and CREATE_TIME =  #{createTime}
+	</if>
+	<if test="expiredTime != null" >
+	    and EXPIRED_TIME =  #{expiredTime}
+	</if>
+	<if test="duration != null" >
+	    and DURATION =  #{duration}
+	</if>
+	<if test="refId != null" >
+	    and REF_ID =  #{refId}
+	</if>
+	 	<if test="refType != null and refType != ''" >
+	    and REF_TYPE =  #{refType}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="add" parameterType="Object" >
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	SELECT LAST_INSERT_ID()
+  </selectKey>
+  insert into Token(ID,CODE,CREATE_TIME,EXPIRED_TIME,DURATION,REF_ID,REF_TYPE)
+ values(#{id},#{code},now(),#{expiredTime},#{duration},#{refId},#{refType})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update Token set CODE=#{code},CREATE_TIME=now(),EXPIRED_TIME=#{expiredTime},DURATION=#{duration},REF_ID=#{refId},REF_TYPE=#{refType} where ID=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update Token set 
+	<trim  suffixOverrides="," >
+	<if test="code != null  and code != '' ">
+		CODE=#{code},
+	</if>
+	<if test="createTime != null  ">
+		CREATE_TIME=#{createTime},
+	</if>
+	<if test="expiredTime != null  ">
+		EXPIRED_TIME=#{expiredTime},
+	</if>
+	<if test="duration != null  ">
+		DURATION=#{duration},
+	</if>
+	<if test="refId != null  ">
+		REF_ID=#{refId},
+	</if>
+	<if test="refType != null  and refType != '' ">
+		REF_TYPE=#{refType},
+	</if>
+	</trim> where ID=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from Token where ID = #{id}
+</delete>
+ 
+<!-- 根据id查询 Token -->
+<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Column_List" /> 
+	 from Token where ID = #{id}
+</select>
+
+<!-- Token 列表总数-->
+<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from Token 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+<!-- 查询Token列表 -->
+<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from Token 
+	<include refid="Example_Where_Clause"/>
+	<if test="pager.orderCondition != null and pager.orderCondition != ''" >
+      ${pager.orderCondition}
+    </if>
+    <if test="pager.mysqlQueryCondition != null and pager.mysqlQueryCondition != ''" >
+       ${pager.mysqlQueryCondition}
+    </if>
+</select>
+  	
+</mapper>   
