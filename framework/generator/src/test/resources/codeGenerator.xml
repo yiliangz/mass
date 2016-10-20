@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE generatorConfiguration-->
+        <!--PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"-->
+        <!--"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">-->
+<generatorConfiguration>
+
+    <jdbcConnection>
+        <driver>com.mysql.jdbc.Driver</driver>
+        <url>jdbc:mysql://localhost:3306/binfmaven?useUnicode=true</url>
+        <username>root</username>
+        <password>root</password>
+    </jdbcConnection>
+
+    <generateResources>
+        <generateResource table="player" comment="球员"
+                basePackage="org.mass.framework.generator.test">
+
+            <section>model</section>
+            <section>bean</section>
+            <section>mybatis</section>
+            <section>mapper</section>
+            <section>service</section>
+            <section>action</section>
+        </generateResource>
+    </generateResources>
+
+</generatorConfiguration>
